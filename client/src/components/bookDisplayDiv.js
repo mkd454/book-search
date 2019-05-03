@@ -18,32 +18,39 @@ const styles = {
 }
 
 function BookDisplayDiv(props) {
-  let book = props.results
-  console.log(book[0]);
+  let books = props.results
   return (
     <div style={styles.boop}>
-      <container>
-        <div className="row">
-          <div className="col-6">
-            <h4>Harry Potter's Bookshelf</h4>
-            <p>The Great Book a behind the Hogwats Adventures</p>
-            <p style={styles.boop4}>Written By John Granger</p>
-          </div>
-          <div className="col-6" style={styles.boop2}>
-            <button type="button" style={styles.boop3} className="btn btn-danger">View</button>
-            <button type="button" style={styles.boop3} className="btn btn-danger">Save</button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-3">
-            <img className="img-fluid" src="https://via.placeholder.com/250/09f/fff.png" alt="" />
-          </div>
-          <div className="col-9">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo velit eu nibh pretium, vel molestie nulla molestie. Vivamus laoreet malesuada lectus, id sodales urna tincidunt id. Morbi aliquet, risus et sollicitudin suscipit, ipsum ex porttitor ligula, vitae pellentesque turpis arcu ut quam. Nullam vel ultricies nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin ut vulputate tortor. Donec erat dui, laoreet in magna sit amet, fringilla maximus odio. In non commodo ligula. Mauris facilisis urna a leo ultricies, vitae fringilla lectus pellentesque. Nulla consectetur, mi sed aliquet pellentesque, odio leo scelerisque ligula, ac semper diam arcu quis ex. Aliquam neque nisl, cursus non scelerisque ac, laoreet vel neque. Aliquam posuere neque eu leo bibendum, eu euismod lorem molestie. Curabitur eget vehicula mauris, ut dictum ante. Morbi nec velit vehicula, tempus mi in, interdum neque.</p>
-          </div>
-        </div>
-      </container>
-      
+      {books.map((book) => {
+        return (
+          <container>
+            <div className="row">
+              <div className="col-9">
+                <h4>{book.volumeInfo.title}</h4>
+                <p style={styles.boop4}>Written By {book.volumeInfo.authors.join(", ")}</p>
+              </div>
+              <div className="col-3" style={styles.boop2}>
+                <a href={book.volumeInfo.infoLink === undefined
+                  ? ""
+                  : `${book.volumeInfo.infoLink}`} target="_blank">
+                  <button type="button" style={styles.boop3} className="btn btn-danger">View</button>
+                </a>
+                <button type="button" style={styles.boop3} className="btn btn-danger">Save</button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-2">
+                <img className="img-fluid" src={book.volumeInfo.imageLinks === undefined
+                  ? "https://books.google.com/googlebooks/images/no_cover_thumb.gif"
+                  : `${book.volumeInfo.imageLinks.thumbnail}`} alt="book cover" />
+              </div>
+              <div className="col-10">
+                <p>{book.volumeInfo.description}</p>
+              </div>
+            </div>
+          </container>
+        )
+      })}
     </div>
   )
 }
